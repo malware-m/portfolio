@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import useTypewriter from "@/hooks/useTypewriter";
 
 export default function Hero() {
-  const name = useTypewriter("Arslan Zulfiqar", 100);
+  const name = useTypewriter("Muhammad Arslan", 100);
   const title = useTypewriter("Offensive Security Researcher & Pentester", 50, 1200);
 
   return (
