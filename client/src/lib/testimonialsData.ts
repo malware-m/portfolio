@@ -1,3 +1,5 @@
+
+// This is dummy data. It has been removed from the project.
 export const testimonialsData = [
   {
     name: "Sarah Johnson",

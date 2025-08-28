@@ -18,6 +18,7 @@ export const skillsData = {
       "C++",
       "php",
       "PowerShell",
+      "Assembly"
     ],
     "Security Tools": [
       "Wireshark",
@@ -41,6 +42,7 @@ export const skillsData = {
       "Linux",
       "Programming",
       "Artificial Intellignece",
+      "Reverse Engineering"
     ],
   },
 };
