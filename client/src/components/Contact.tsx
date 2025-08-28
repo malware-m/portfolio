@@ -20,72 +20,59 @@ export default function Contact() {
       [e.target.id]: e.target.value
     });
   };
+const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    // Basic validation
-    if (!formData.name || !formData.email || !formData.message) {
-      toast({
-        title: "Missing fields",
-        description: "Please fill all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
+  if (!formData.name || !formData.email || !formData.message) {
+    toast({
+      title: "Missing fields",
+      description: "Please fill all required fields",
+      variant: "destructive",
+    });
+    return;
+  }
 
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(formData.email)) {
-      toast({
-        title: "Invalid email",
-        description: "Please enter a valid email address",
-        variant: "destructive"
-      });
-      return;
-    }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(formData.email)) {
+    toast({
+      title: "Invalid email",
+      description: "Please enter a valid email address",
+      variant: "destructive",
+    });
+    return;
+  }
 
-    setIsSubmitting(true);
+  setIsSubmitting(true);
 
-    try {
-      // For Netlify Forms
-      const form = e.target as HTMLFormElement;
-      const formData = new FormData(form);
-      formData.append("form-name", "contact");
-      
-      const response = await fetch("/", {
-        method: "POST",
-        headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: new URLSearchParams(formData as any).toString(),
-      });
-      
-      if (!response.ok) {
-        throw new Error(`Form submission failed: ${response.status}`);
-      }
-      
-      toast({
-        title: "Message sent",
-        description: "Thank you for your message. I'll get back to you soon!",
-      });
-      
-      // Clear form
-      setFormData({
-        name: "",
-        email: "",
-        subject: "",
-        message: ""
-      });
-    } catch (error) {
-      console.error("Form submission error:", error);
-      toast({
-        title: "Error sending message",
-        description: "There was an error sending your message. Please try again later.",
-        variant: "destructive"
-      });
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  try {
+    const response = await fetch("/api/contact", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(formData),
+    });
+
+    if (!response.ok) throw new Error(`Form submission failed: ${response.status}`);
+
+    toast({
+      title: "Message sent",
+      description: "Thank you for your message. I'll get back to you soon!",
+    });
+
+    setFormData({ name: "", email: "", subject: "", message: "" });
+  } catch (error) {
+    console.error("Form submission error:", error);
+    toast({
+      title: "Error sending message",
+      description: "There was an error sending your message. Please try again later.",
+      variant: "destructive",
+    });
+  } finally {
+    setIsSubmitting(false);
+  }
+};
+
 
   return (
     <section id="contact" className="py-16 md:py-24 px-4 bg-[#1A1A1A] bg-opacity-70 transition-all duration-500">
