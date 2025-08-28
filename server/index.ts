@@ -52,15 +52,18 @@ app.use((req, res, next) => {
     log(`Unhandled error: ${message}`);
   });
 
-  // Serve static or set up Vite
+  // FIXED: Updated for production deployment
   if (process.env.NODE_ENV === "development") {
     await setupVite(app, server);
+    const port = 3000;
+    server.listen(port, "127.0.0.1", () => {
+      log(`serving on port ${port}`);
+    });
   } else {
     serveStatic(app);
+    // Don't call server.listen() in production - Vercel handles this
   }
-
-  const port = 3000;
-  server.listen(port, "127.0.0.1", () => {
-    log(`serving on port ${port}`);
-  });
 })();
+
+// FIXED: Export the app for Vercel
+export default app;
