@@ -1,8 +1,8 @@
-// pages/api/contact.ts
-import type { NextApiRequest, NextApiResponse } from "next";
+// api/contact.ts (at project root, not in src/)
+import type { VercelRequest, VercelResponse } from "@vercel/node";
 import nodemailer from "nodemailer";
 
-export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== "POST") {
     return res.status(405).json({ message: "Method Not Allowed" });
   }
@@ -24,7 +24,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     await transporter.sendMail({
       from: process.env.SMTP_USER,
-      to: process.env.SMTP_USER, // 👈 send to *your inbox*, not the user’s email
+      to: process.env.SMTP_USER, // 👈 goes to your inbox
       subject: subject || "Contact Form Submission",
       text: `Name: ${name}\nEmail: ${email}\nMessage:\n${message}`,
     });
